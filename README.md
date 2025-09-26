@@ -2,7 +2,7 @@
 
 Competition entry for the Kootenay Savings Credit Union (KSCU) Wallet-Share Markov Challenge.
 
-**Deadline: September 25, 2025 (11:59 PM PT)**
+**Deadline: September 29, 2025 (11:59 PM PT)**
 
 ## Project Structure
 
@@ -96,11 +96,11 @@ python -m src.markov_model
 
 ## Next Steps
 
-1. ✅ Data exploration and preprocessing
-2. ✅ Basic Markov model implementation
-3. 🔄 Feature engineering and model refinement
-4. 📊 Build interactive prototype (Streamlit)
-5. 📝 Generate business insights and report
+1. Data exploration and preprocessing
+2. Basic Markov model implementation
+3. Feature engineering and model refinement
+4. Build interactive prototype (Streamlit)
+5. Generate business insights and report
 
 ## Competition Scoring
 
