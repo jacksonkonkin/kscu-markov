@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(source:*)",
+      "Bash(python:*)",
+      "Bash(chmod:*)",
+      "Read(//Users/jacksonkonkin/Documents/**)",
+      "Bash(awk:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
