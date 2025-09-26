@@ -100,30 +100,42 @@ def display_prediction_results(transition_probs: Dict, wallet_shares: Dict, curr
     # Transition probabilities
     st.markdown("### Next Quarter Transition Probabilities")
     
-    # Create columns for each state
+    # Create columns for each state with consistent ordering
     cols = st.columns(3)
-    
-    for i, (state, prob) in enumerate(transition_probs.items()):
-        with cols[i]:
-            # Color coding
-            if state == "STAY":
-                color = "🟢"
-                css_class = "success"
-            elif state == "SPLIT":
-                color = "🟡"
-                css_class = "warning"
-            else:
-                color = "🔴"
-                css_class = "error"
-            
-            st.markdown(f"""
-            <div style="text-align: center; padding: 1rem; border: 2px solid #ddd; border-radius: 0.5rem; margin: 0.5rem 0;">
-                <h3>{color} {state}</h3>
-                <h1 style="margin: 0; color: {'green' if state == 'STAY' else 'orange' if state == 'SPLIT' else 'red'}">
-                    {prob:.1%}
-                </h1>
-            </div>
-            """, unsafe_allow_html=True)
+    state_order = ["STAY", "SPLIT", "LEAVE"]  # Define order for consistency
+
+    for i, state in enumerate(state_order):
+        if state in transition_probs:
+            prob = transition_probs[state]
+            with cols[i]:
+                # Enhanced color coding and styling
+                if state == "STAY":
+                    bg_color = "#d4edda"
+                    border_color = "#28a745"
+                    text_color = "#155724"
+                elif state == "SPLIT":
+                    bg_color = "#fff3cd"
+                    border_color = "#ffc107"
+                    text_color = "#856404"
+                else:  # LEAVE
+                    bg_color = "#f8d7da"
+                    border_color = "#dc3545"
+                    text_color = "#721c24"
+
+                st.markdown(f"""
+                <div style="
+                    background-color: {bg_color};
+                    border: 2px solid {border_color};
+                    border-radius: 10px;
+                    padding: 20px;
+                    text-align: center;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                ">
+                    <h3 style="margin: 0; color: {text_color}; font-weight: 600;">{state}</h3>
+                    <h1 style="margin: 10px 0; color: {border_color}; font-size: 36px;">{prob:.1%}</h1>
+                    <p style="margin: 0; color: {text_color}; font-size: 14px;">Probability</p>
+                </div>
+                """, unsafe_allow_html=True)
     
     # Wallet share predictions
     st.markdown("### Predicted Wallet Share by State")
@@ -201,7 +213,7 @@ def display_risk_assessment(customer_features: Dict, risk_factors: List[str]):
         customer_features: Dictionary of customer features
         risk_factors: List of features that indicate risk
     """
-    st.subheader("🚨 Risk Assessment")
+    st.subheader("Risk Assessment")
     
     risk_score = 0
     risk_details = []
@@ -254,13 +266,13 @@ def display_risk_assessment(customer_features: Dict, risk_factors: List[str]):
     risk_percentage = (risk_score / max_possible_score) * 100 if max_possible_score > 0 else 0
     
     if risk_percentage >= 70:
-        overall_risk = "🔴 HIGH RISK"
+        overall_risk = "HIGH RISK"
         color = "red"
     elif risk_percentage >= 40:
-        overall_risk = "🟡 MEDIUM RISK"
+        overall_risk = "MEDIUM RISK"
         color = "orange"
     else:
-        overall_risk = "🟢 LOW RISK"
+        overall_risk = "LOW RISK"
         color = "green"
     
     st.markdown(f"""
@@ -327,7 +339,7 @@ def display_model_metrics(metrics: Dict):
     Args:
         metrics: Dictionary of performance metrics
     """
-    st.subheader("📊 Model Performance Metrics")
+    st.subheader("Model Performance Metrics")
     
     # Key metrics
     col1, col2, col3, col4 = st.columns(4)
@@ -415,7 +427,7 @@ def scenario_selector():
     Returns:
         Dictionary with scenario configuration
     """
-    st.subheader("🎯 Select Scenario")
+    st.subheader("Select Scenario")
     
     scenario_type = st.selectbox(
         "Intervention Type:",

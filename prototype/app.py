@@ -42,7 +42,7 @@ except ImportError as e:
 # Page configuration
 st.set_page_config(
     page_title="KSCU Wallet-Share Predictor",
-    page_icon="🏦",
+    page_icon="💼",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -111,7 +111,7 @@ def load_model():
 def main():
     """Main application function."""
     
-    st.title("🏦 KSCU Wallet-Share Markov Predictor")
+    st.title("KSCU Wallet-Share Markov Predictor")
     st.markdown("*Interactive tool for predicting member state transitions and wallet share*")
     
     # Load data and model
@@ -126,14 +126,14 @@ def main():
     st.sidebar.title("Navigation")
     page = st.sidebar.selectbox(
         "Choose a page:",
-        ["🎯 Individual Prediction", "📊 Scenario Analysis", "📈 Model Performance", "🔍 Business Insights"]
+        ["Individual Prediction", "Scenario Analysis", "Model Performance", "Business Insights"]
     )
     
-    if page == "🎯 Individual Prediction":
+    if page == "Individual Prediction":
         individual_prediction_page(model, feature_cols, df)
-    elif page == "📊 Scenario Analysis":
+    elif page == "Scenario Analysis":
         scenario_analysis_page(model, feature_cols, df)
-    elif page == "📈 Model Performance":
+    elif page == "Model Performance":
         model_performance_page(model, df, test)
     else:
         business_insights_page(df)
@@ -141,7 +141,7 @@ def main():
 def individual_prediction_page(model, feature_cols, df):
     """Page for individual customer predictions."""
     
-    st.header("🎯 Individual Customer Prediction")
+    st.header("Individual Customer Prediction")
     st.markdown("Predict state transitions and wallet share for a specific customer profile.")
     
     col1, col2 = st.columns([1, 2])
@@ -218,16 +218,41 @@ def individual_prediction_page(model, feature_cols, df):
         fig.update_layout(showlegend=False, height=400)
         st.plotly_chart(fig, use_container_width=True)
         
-        # Display metrics
-        for state, prob in trans_probs.items():
-            color_class = "success-metric" if state == "STAY" else "warning-metric" if state == "SPLIT" else "danger-metric"
-            st.markdown(f"""
-            <div class="metric-card {color_class}">
-                <h4>{state}</h4>
-                <h2>{prob:.1%}</h2>
-            </div>
-            """, unsafe_allow_html=True)
-            st.markdown("")
+        # Display metrics in columns for better layout
+        metric_cols = st.columns(3)
+        state_order = ["STAY", "SPLIT", "LEAVE"]  # Define order for consistency
+
+        for idx, state in enumerate(state_order):
+            if state in trans_probs:
+                prob = trans_probs[state]
+                with metric_cols[idx]:
+                    if state == "STAY":
+                        bg_color = "#d4edda"
+                        border_color = "#28a745"
+                        text_color = "#155724"
+                    elif state == "SPLIT":
+                        bg_color = "#fff3cd"
+                        border_color = "#ffc107"
+                        text_color = "#856404"
+                    else:  # LEAVE
+                        bg_color = "#f8d7da"
+                        border_color = "#dc3545"
+                        text_color = "#721c24"
+
+                    st.markdown(f"""
+                    <div style="
+                        background-color: {bg_color};
+                        border: 2px solid {border_color};
+                        border-radius: 10px;
+                        padding: 20px;
+                        text-align: center;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    ">
+                        <h3 style="margin: 0; color: {text_color}; font-weight: 600;">{state}</h3>
+                        <h1 style="margin: 10px 0; color: {border_color}; font-size: 36px;">{prob:.1%}</h1>
+                        <p style="margin: 0; color: {text_color}; font-size: 14px;">Probability</p>
+                    </div>
+                    """, unsafe_allow_html=True)
         
         # Predict wallet share for each potential state
         st.markdown("### Predicted Wallet Share by State")
@@ -254,7 +279,7 @@ def individual_prediction_page(model, feature_cols, df):
 def scenario_analysis_page(model, feature_cols, df):
     """Page for scenario testing and interventions."""
     
-    st.header("📊 Scenario Analysis")
+    st.header("Scenario Analysis")
     st.markdown("Test business interventions and their impact on customer behavior.")
     
     # Scenario selection
@@ -280,7 +305,7 @@ def scenario_analysis_page(model, feature_cols, df):
 def digital_campaign_scenario(model, feature_cols, df):
     """Digital adoption campaign scenario."""
     
-    st.subheader("📱 Digital Adoption Campaign")
+    st.subheader("Digital Adoption Campaign")
     st.markdown("Simulate the impact of increasing digital engagement scores.")
     
     col1, col2 = st.columns(2)
@@ -363,7 +388,7 @@ def digital_campaign_scenario(model, feature_cols, df):
 def product_campaign_scenario(model, feature_cols, df):
     """Product cross-selling scenario."""
     
-    st.subheader("🛍️ Product Cross-selling Campaign")
+    st.subheader("Product Cross-selling Campaign")
     st.markdown("Simulate impact of increasing product holdings.")
     
     # Implementation similar to digital campaign but for product_count
@@ -393,7 +418,7 @@ def product_campaign_scenario(model, feature_cols, df):
 def retention_scenario(model, feature_cols, df):
     """Customer retention program scenario."""
     
-    st.subheader("🎯 Customer Retention Program")
+    st.subheader("Customer Retention Program")
     st.markdown("Target at-risk customers to prevent churn.")
     
     # Identify at-risk customers
@@ -428,7 +453,7 @@ def retention_scenario(model, feature_cols, df):
 def custom_scenario(model, feature_cols, df):
     """Custom intervention scenario."""
     
-    st.subheader("🛠️ Custom Intervention")
+    st.subheader("Custom Intervention")
     st.markdown("Design your own intervention scenario.")
     
     # Allow user to modify multiple features
@@ -483,7 +508,7 @@ def custom_scenario(model, feature_cols, df):
 def model_performance_page(model, df, test_data):
     """Page showing model performance metrics."""
     
-    st.header("📈 Model Performance")
+    st.header("Model Performance")
     st.markdown("Comprehensive evaluation of the Markov model performance.")
     
     # Basic model info
@@ -583,7 +608,7 @@ def model_performance_page(model, df, test_data):
 def business_insights_page(df):
     """Page for business insights and analysis."""
     
-    st.header("🔍 Business Insights")
+    st.header("Business Insights")
     st.markdown("Key findings and actionable insights from the analysis.")
     
     # Executive Summary
@@ -610,22 +635,22 @@ def business_insights_page(df):
     
     insights = [
         {
-            "title": "🎯 High Retention Rate",
+            "title": "High Retention Rate",
             "description": f"Overall retention rate of {stay_rate:.1%} indicates strong customer loyalty.",
             "action": "Continue current retention strategies while focusing on at-risk segments."
         },
         {
-            "title": "📱 Digital Engagement Critical",
+            "title": "Digital Engagement Critical",
             "description": "Digital engagement strongly correlates with wallet share and retention.",
             "action": "Invest in digital channel improvements and customer education."
         },
         {
-            "title": "🛍️ Product Holdings Matter",
+            "title": "Product Holdings Matter",
             "description": "Customers with more products show higher retention rates.",
             "action": "Implement cross-selling programs targeting 1-2 product customers."
         },
         {
-            "title": "⚠️ Early Warning Signs",
+            "title": "Early Warning Signs",
             "description": "Complaints and fee events are strong predictors of churn risk.",
             "action": "Implement proactive outreach for customers with complaints/fees."
         }
